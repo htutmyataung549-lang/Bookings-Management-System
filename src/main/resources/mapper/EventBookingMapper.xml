@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.event_booking_system.mapper.EventBookingMapper">
+
+    <resultMap id="EventResultMap" type="com.example.event_booking_system.entities.Event">
+        <id property="id" column="id" javaType="java.util.UUID" jdbcType="OTHER" typeHandler="org.apache.ibatis.type.ObjectTypeHandler"/>
+        <result property="title" column="title"/>
+        <result property="eventDate" column="event_date"/>
+        <result property="totalTickets" column="total_tickets"/>
+        <result property="availableTickets" column="available_tickets"/>
+        <result property="ticketPrice" column="ticket_price"/>
+    </resultMap>
+
+    <resultMap id="BookingResultMap" type="com.example.event_booking_system.entities.Booking">
+        <id property="id" column="id" javaType="java.util.UUID" jdbcType="OTHER" typeHandler="org.apache.ibatis.type.ObjectTypeHandler"/>
+        <result property="eventId" column="event_id" javaType="java.util.UUID" jdbcType="OTHER" typeHandler="org.apache.ibatis.type.ObjectTypeHandler"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="quantity" column="quantity"/>
+        <result property="bookingDate" column="booking_date"/>
+    </resultMap>
+
+
+    <select id="getEventById" resultMap="EventResultMap">
+        SELECT id, title, event_date, total_tickets, available_tickets, ticket_price
+        FROM events
+        WHERE id = #{id, jdbcType=OTHER, typeHandler=org.apache.ibatis.type.ObjectTypeHandler}
+    </select>
+
+    <select id="getAllEvents" resultMap="EventResultMap">
+        SELECT id, title, event_date, total_tickets, available_tickets, ticket_price
+        FROM events
+        ORDER BY event_date DESC
+    </select>
+
+    <select id="getAllBookings" resultMap="BookingResultMap">
+        SELECT id, event_id, customer_name, quantity, booking_date
+        FROM bookings
+        ORDER BY booking_date DESC
+    </select>
+
+    <select id="getBookingByCustomer" resultMap="BookingResultMap">
+        SELECT id, event_id, customer_name, quantity, booking_date
+        FROM bookings
+        WHERE customer_name = #{customerName}
+        ORDER BY booking_date DESC
+    </select>
+
+
+    <update id="updateAvailableTickets">
+        UPDATE events
+        SET available_tickets = available_tickets - #{quantity}
+        WHERE id = #{id, jdbcType=OTHER, typeHandler=org.apache.ibatis.type.ObjectTypeHandler}
+          AND available_tickets >= #{quantity}
+    </update>
+
+    <insert id="insertBooking">
+        INSERT INTO bookings (id, event_id, customer_name, quantity, booking_date)
+        VALUES (
+                   #{id, jdbcType=OTHER, typeHandler=org.apache.ibatis.type.ObjectTypeHandler},
+                   #{eventId, jdbcType=OTHER, typeHandler=org.apache.ibatis.type.ObjectTypeHandler},
+                   #{customerName},
+                   #{quantity},
+                   #{bookingDate}
+               )
+    </insert>
+
+    <insert id="insertEvent">
+        INSERT INTO events (id, title, event_date, total_tickets, available_tickets, ticket_price)
+        VALUES (
+                   #{id, jdbcType=OTHER, typeHandler=org.apache.ibatis.type.ObjectTypeHandler},
+                   #{title},
+                   #{eventDate},
+                   #{totalTickets},
+                   #{availableTickets},
+                   #{ticketPrice}
+               )
+    </insert>
+
+</mapper>
