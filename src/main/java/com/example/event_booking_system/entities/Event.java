@@ -1,5 +1,8 @@
 package com.example.event_booking_system.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -8,7 +11,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
+@Entity
+@Table(name = "events")
 public class Event {
+    @Id
     private UUID id;
 
     @NotBlank (message = "Event title is required.")
