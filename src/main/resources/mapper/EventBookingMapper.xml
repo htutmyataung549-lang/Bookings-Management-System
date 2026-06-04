@@ -17,7 +17,9 @@
         <result property="eventId" column="event_id" javaType="java.util.UUID" jdbcType="OTHER" typeHandler="org.apache.ibatis.type.ObjectTypeHandler"/>
         <result property="customerName" column="customer_name"/>
         <result property="quantity" column="quantity"/>
+        <result property="totalAmount" column="total_amount" />
         <result property="bookingDate" column="booking_date"/>
+        <result property="eventTitle" column="event_title"/>
     </resultMap>
 
 
@@ -33,19 +35,46 @@
         ORDER BY event_date DESC
     </select>
 
+<!--    <select id="getAllBookings" resultMap="BookingResultMap">-->
+<!--        SELECT id, event_id, customer_name, quantity, booking_date , total_amount-->
+<!--        FROM bookings-->
+<!--        ORDER BY booking_date DESC-->
+<!--    </select>-->
+
+<!--    <select id="getBookingByCustomer" resultMap="BookingResultMap">-->
+<!--        SELECT id, event_id, customer_name, quantity, booking_date, total_amount-->
+<!--        FROM bookings-->
+<!--        WHERE customer_name = #{customerName}-->
+<!--        ORDER BY booking_date DESC-->
+<!--    </select>-->
     <select id="getAllBookings" resultMap="BookingResultMap">
-        SELECT id, event_id, customer_name, quantity, booking_date
-        FROM bookings
-        ORDER BY booking_date DESC
+        SELECT
+            b.id,
+            b.event_id,
+            b.customer_name,
+            b.quantity,
+            b.total_amount,
+            b.booking_date,
+            e.title AS event_title
+        FROM bookings b
+                 JOIN events e ON b.event_id = e.id
+        ORDER BY b.booking_date DESC
     </select>
 
     <select id="getBookingByCustomer" resultMap="BookingResultMap">
-        SELECT id, event_id, customer_name, quantity, booking_date
-        FROM bookings
-        WHERE customer_name = #{customerName}
-        ORDER BY booking_date DESC
+        SELECT
+            b.id,
+            b.event_id,
+            b.customer_name,
+            b.quantity,
+            b.total_amount,
+            b.booking_date,
+            e.title AS event_title
+        FROM bookings b
+                 JOIN events e ON b.event_id = e.id
+        WHERE b.customer_name = #{customerName}
+        ORDER BY b.booking_date DESC
     </select>
-
 
     <update id="updateAvailableTickets">
         UPDATE events
@@ -55,13 +84,14 @@
     </update>
 
     <insert id="insertBooking">
-        INSERT INTO bookings (id, event_id, customer_name, quantity, booking_date)
+        INSERT INTO bookings (id, event_id, customer_name, quantity, booking_date, total_amount)
         VALUES (
                    #{id, jdbcType=OTHER, typeHandler=org.apache.ibatis.type.ObjectTypeHandler},
                    #{eventId, jdbcType=OTHER, typeHandler=org.apache.ibatis.type.ObjectTypeHandler},
                    #{customerName},
                    #{quantity},
-                   #{bookingDate}
+                   #{bookingDate},
+                    #{totalAmount}
                )
     </insert>
 

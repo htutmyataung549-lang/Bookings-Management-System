@@ -60,6 +60,24 @@ public class BookingController {
         }
     }
 
+    @GetMapping("/events/{id}")
+    public ResponseEntity<ApiResponse> getEventById(@PathVariable("id") String id) {
+        try {
+            Event event = bookingService.getEventById(id);
+
+            if (event == null) {
+                ApiResponse response = new ApiResponse("Fail", "Event not found with ID: " + id, null);
+                return ResponseEntity.status(404).body(response);
+            }
+
+            ApiResponse response = new ApiResponse("Success", "Fetched event details successfully.", event);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            ApiResponse response = new ApiResponse("Error", "Internal Server Error: " + e.getMessage(), null);
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
     @PostMapping("/bookings")
     public ResponseEntity<ApiResponse> createBooking(@Valid @RequestBody Booking booking) {
         try {

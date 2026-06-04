@@ -19,7 +19,7 @@ public interface EventBookingMapper {
 
     List<Booking> getBookingByCustomer(@Param("customerName") String customerName);
 
-    int updateAvailableTickets(@Param("id") UUID eventId , @Param("quantity") Integer quantity );
+    int updateAvailableTickets(@Param("id") UUID id , @Param("quantity") Integer quantity );
 
     int insertBooking(Booking booking);
 

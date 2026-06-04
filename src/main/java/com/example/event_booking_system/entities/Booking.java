@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,6 +23,11 @@ public class Booking {
     @NotNull(message = "Ticket quantity is required.")
     @Min(value = 1, message = "Ticket quantity must be at least 1.")
     private Integer quantity;
+
+    private BigDecimal totalAmount;
+
     private LocalDateTime bookingDate;
+
+    private String eventTitle;
 
 }
