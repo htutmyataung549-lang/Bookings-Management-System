@@ -15,8 +15,10 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${root-context.route:/api}")
-@CrossOrigin(origins = "http://localhost:3000")
-public class BookingController {
+@CrossOrigin(origins = {
+        "http://localhost:3000",
+        "https://bookings-management-system-frontend.vercel.app"
+})public class BookingController {
     private final BookingService bookingService;
 
     @GetMapping("/events")
