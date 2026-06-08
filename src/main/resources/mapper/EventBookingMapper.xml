@@ -35,18 +35,6 @@
         ORDER BY event_date DESC
     </select>
 
-<!--    <select id="getAllBookings" resultMap="BookingResultMap">-->
-<!--        SELECT id, event_id, customer_name, quantity, booking_date , total_amount-->
-<!--        FROM bookings-->
-<!--        ORDER BY booking_date DESC-->
-<!--    </select>-->
-
-<!--    <select id="getBookingByCustomer" resultMap="BookingResultMap">-->
-<!--        SELECT id, event_id, customer_name, quantity, booking_date, total_amount-->
-<!--        FROM bookings-->
-<!--        WHERE customer_name = #{customerName}-->
-<!--        ORDER BY booking_date DESC-->
-<!--    </select>-->
     <select id="getAllBookings" resultMap="BookingResultMap">
         SELECT
             b.id,
@@ -84,14 +72,15 @@
     </update>
 
     <insert id="insertBooking">
-        INSERT INTO bookings (id, event_id, customer_name, quantity, booking_date, total_amount)
+        INSERT INTO bookings (id, event_id, customer_name, quantity, booking_date, total_amount, event_title)
         VALUES (
                    #{id, jdbcType=OTHER, typeHandler=org.apache.ibatis.type.ObjectTypeHandler},
                    #{eventId, jdbcType=OTHER, typeHandler=org.apache.ibatis.type.ObjectTypeHandler},
                    #{customerName},
                    #{quantity},
                    #{bookingDate},
-                    #{totalAmount}
+                   #{totalAmount},
+                   #{eventTitle}
                )
     </insert>
 
