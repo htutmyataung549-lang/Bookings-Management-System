@@ -74,7 +74,7 @@ public class BookingService {
 
         booking.setId(UUID.randomUUID());
         booking.setBookingDate(LocalDateTime.now());
-
+        booking.setEventTitle(event.getTitle());
         eventBookingMapper.insertBooking(booking);
         return booking;
     }
