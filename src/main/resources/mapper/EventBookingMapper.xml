@@ -20,17 +20,18 @@
         <result property="totalAmount" column="total_amount" />
         <result property="bookingDate" column="booking_date"/>
         <result property="eventTitle" column="event_title"/>
+        <result property="eventDate" column="event_date"/>
     </resultMap>
 
 
     <select id="getEventById" resultMap="EventResultMap">
-        SELECT id, title, event_date, total_tickets, available_tickets, ticket_price
+        SELECT id, title, event_date, total_tickets, available_tickets, ticket_price, event_date
         FROM events
         WHERE id = #{id, jdbcType=OTHER, typeHandler=org.apache.ibatis.type.ObjectTypeHandler}
     </select>
 
     <select id="getAllEvents" resultMap="EventResultMap">
-        SELECT id, title, event_date, total_tickets, available_tickets, ticket_price
+        SELECT id, title, event_date, total_tickets, available_tickets, ticket_price, event_date
         FROM events
         ORDER BY event_date DESC
     </select>
@@ -43,9 +44,9 @@
             b.quantity,
             b.total_amount,
             b.booking_date,
-            e.title AS event_title
-        FROM bookings b
-                 JOIN events e ON b.event_id = e.id
+            e.title AS event_title,
+            e.event_date AS event_date FROM bookings b
+                                                JOIN events e ON b.event_id = e.id
         ORDER BY b.booking_date DESC
     </select>
 
@@ -57,6 +58,7 @@
             b.quantity,
             b.total_amount,
             b.booking_date,
+            e.event_date AS event_date,
             e.title AS event_title
         FROM bookings b
                  JOIN events e ON b.event_id = e.id

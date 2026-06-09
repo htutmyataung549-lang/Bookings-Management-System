@@ -36,4 +36,6 @@ public class Booking {
 
     private String eventTitle;
 
+    private LocalDateTime eventDate;
+
 }
